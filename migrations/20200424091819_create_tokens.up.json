@@ -1,0 +1,18 @@
+[
+    {
+      "create": "tokens"
+    },
+    {
+      "createIndexes":   "tokens",
+      "indexes": [
+        {
+          "key": {
+            "login": 1
+          },
+          "name": "token_key_index",
+          "unique": true,
+          "background": true
+        }
+      ]
+    }
+  ]
