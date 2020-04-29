@@ -11,10 +11,10 @@ func New() *mux.Router {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/tokens", getTokens).Methods("GET")
-	// r.HandleFunc("/tokens/{id}", getToken).Methods("GET")
-	// r.HandleFunc("/tokens", createtoken).Methods("POST")
-	// r.HandleFunc("/tokens/{id}", updateToken).Methods("PUT")
-	// r.HandleFunc("/tokens/{id}", deleteToken).Methods("DELETE")
+	r.HandleFunc("/tokens/{id}", getToken).Methods("GET")
+	r.HandleFunc("/tokens", createToken).Methods("POST")
+	r.HandleFunc("/tokens/{id}", updateToken).Methods("PUT")
+	r.HandleFunc("/tokens/{id}", deleteToken).Methods("DELETE")
 
 	return r
 }

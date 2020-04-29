@@ -5,7 +5,7 @@ import (
 )
 
 type Token struct {
-	ID          primitive.ObjectID     `bson:"_id" json:"id"`
+	ID          primitive.ObjectID     `bson:"_id,omitempty" json:"id"`
 	Key         string                 `bson:"key" json:"key"`
 	Description string                 `bson:"description" json:"description"`
 	Active      bool                   `bson:"active" json:"active"`
