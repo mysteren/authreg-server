@@ -3,6 +3,8 @@ module gitlab.devkeeper.com/authreg/server
 go 1.14
 
 require (
+	github.com/adam-hanna/jwt-auth/jwt v0.0.0-20200415175153-285fbe765f4c
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gorilla/mux v1.7.4
 	github.com/joho/godotenv v1.3.0
 	github.com/sirupsen/logrus v1.5.0

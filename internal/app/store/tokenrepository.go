@@ -50,6 +50,18 @@ func (r *TokenRepository) Find(id string) (*model.Token, error) {
 }
 
 //
+func (r *TokenRepository) FindByKey(key string) (*model.Token, error) {
+
+	var token *model.Token
+
+	filter := bson.D{primitive.E{Key: "key", Value: key}}
+
+	err := GetStoreDB().Collection(COLLECTION).FindOne(context.TODO(), filter).Decode(&token)
+
+	return token, err
+}
+
+//
 func (r *TokenRepository) FindAll() ([]*model.Token, error) {
 
 	var tokens []*model.Token

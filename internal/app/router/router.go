@@ -1,31 +1,23 @@
 package router
 
 import (
-	"encoding/json"
-	"net/http"
-
 	"github.com/gorilla/mux"
+	"gitlab.devkeeper.com/authreg/server/internal/app/auth"
 )
 
 func New() *mux.Router {
+
 	r := mux.NewRouter()
 
-	r.HandleFunc("/tokens", getTokens).Methods("GET")
-	r.HandleFunc("/tokens/{id}", getToken).Methods("GET")
-	r.HandleFunc("/tokens", createToken).Methods("POST")
-	r.HandleFunc("/tokens/{id}", updateToken).Methods("PUT")
-	r.HandleFunc("/tokens/{id}", deleteToken).Methods("DELETE")
+	r.HandleFunc("/tokens", auth.AuthMiddleware(getTokens)).Methods("GET")
+	r.HandleFunc("/tokens/{id}", auth.AuthMiddleware(getToken)).Methods("GET")
+	r.HandleFunc("/tokens", auth.AuthMiddleware(createToken)).Methods("POST")
+	r.HandleFunc("/tokens/{id}", auth.AuthMiddleware(updateToken)).Methods("PUT")
+	r.HandleFunc("/tokens/{id}", auth.AuthMiddleware(deleteToken)).Methods("DELETE")
+
+	r.HandleFunc("/tokens/find/{key}", auth.AuthMiddleware(findTokenByKey)).Methods("GET")
+
+	r.HandleFunc("/auth/login", auth.Login).Methods("POST")
 
 	return r
-}
-
-func respondWithError(w http.ResponseWriter, code int, msg string) {
-	respondWithJson(w, code, map[string]string{"error": msg})
-}
-
-func respondWithJson(w http.ResponseWriter, code int, payload interface{}) {
-	response, _ := json.Marshal(payload)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	w.Write(response)
 }
