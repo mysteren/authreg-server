@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -19,20 +20,19 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		auth := r.Header.Get("authorization")
 
-		tokenString := auth[7:len(auth)]
-		//tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MDAwLCJpc3MiOiJhZG1pbiJ9.JcFQMbnaFZxqLTWLyX7aD4M9C4MJF4StXVU7kgB1rKQ"
+		fmt.Printf(auth)
 
-		if tokenString != "" {
-
-			saltKey := os.Getenv("AUTH_TOKEN_SALT_KEY")
-
-			token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-				return []byte(saltKey), nil
-			})
-
-			if err == nil && token.Valid {
-				next.ServeHTTP(w, r)
-				return
+		if auth != "" {
+			tokenString := auth[7:len(auth)]
+			if tokenString != "" {
+				saltKey := os.Getenv("AUTH_TOKEN_SALT_KEY")
+				token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+					return []byte(saltKey), nil
+				})
+				if err == nil && token.Valid {
+					next.ServeHTTP(w, r)
+					return
+				}
 			}
 		}
 

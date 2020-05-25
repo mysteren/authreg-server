@@ -54,7 +54,7 @@ func (r *TokenRepository) FindByKey(key string) (*model.Token, error) {
 
 	var token *model.Token
 
-	filter := bson.D{primitive.E{Key: "key", Value: key}}
+	filter := bson.D{primitive.E{Key: "key", Value: key}, primitive.E{Key: "active", Value: true}}
 
 	err := GetStoreDB().Collection(COLLECTION).FindOne(context.TODO(), filter).Decode(&token)
 
