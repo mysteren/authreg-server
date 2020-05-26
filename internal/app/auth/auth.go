@@ -2,7 +2,6 @@ package auth
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 
@@ -20,7 +19,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 		auth := r.Header.Get("authorization")
 
-		fmt.Printf(auth)
+		// fmt.Printf(auth)
 
 		if auth != "" {
 			tokenString := auth[7:len(auth)]
