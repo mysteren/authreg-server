@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -55,6 +56,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
+
+	fmt.Println(user.Login)
+	fmt.Println(os.Getenv("AUTH_LOGIN"))
+	fmt.Println(user.Password)
+	fmt.Println(os.Getenv("AUTH_PASSWORD"))
 
 	if user.Login == os.Getenv("AUTH_LOGIN") && user.Password == os.Getenv("AUTH_PASSWORD") {
 

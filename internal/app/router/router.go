@@ -15,7 +15,7 @@ func New() *mux.Router {
 	r.HandleFunc("/tokens/{id}", auth.AuthMiddleware(updateToken)).Methods("PUT")
 	r.HandleFunc("/tokens/{id}", auth.AuthMiddleware(deleteToken)).Methods("DELETE")
 
-	r.HandleFunc("/tokens/find/{key}", auth.AuthMiddleware(findTokenByKey)).Methods("GET")
+	r.HandleFunc("/tokens/find/{key}", findTokenByKey).Methods("GET")
 
 	r.HandleFunc("/auth/login", auth.Login).Methods("POST")
 

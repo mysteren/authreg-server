@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -27,6 +26,4 @@ func main() {
 	if err := s.Start(); err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Printf("%+v\n", c)
 }

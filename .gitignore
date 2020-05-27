@@ -1,6 +1,8 @@
 /vendor
 /apiserver
-main  
-
+/dump
+main
+apiserver
+*.pem
 .env
 

@@ -40,7 +40,7 @@ func (s *APIServer) Start() error {
 
 	s.logger.Info("starting server")
 
-	return http.ListenAndServe(s.config.BindAddr, router.New())
+	return http.ListenAndServeTLS(s.config.BindAddr, "cert.pem", "key.pem", router.New())
 }
 
 //
