@@ -2,7 +2,6 @@ package auth
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 
@@ -10,12 +9,14 @@ import (
 	"gitlab.devkeeper.com/authreg/server/internal/app/respond"
 )
 
+// User - struct for json decode
 type User struct {
 	Login    string `json:"login"`
 	Password string `json:"password"`
 }
 
-func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
+// MyAuthMiddleware - authenticate middleware
+func MyAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		auth := r.Header.Get("authorization")
@@ -23,7 +24,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		// fmt.Printf(auth)
 
 		if auth != "" {
-			tokenString := auth[7:len(auth)]
+			tokenString := auth[7:]
 			if tokenString != "" {
 				saltKey := os.Getenv("AUTH_TOKEN_SALT_KEY")
 				token, err := jwt.ParseWithClaims(tokenString, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
@@ -45,6 +46,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	})
 }
 
+// Login - handler for Login route
 func Login(w http.ResponseWriter, r *http.Request) {
 
 	var user User
@@ -56,11 +58,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		respond.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	fmt.Println(user.Login)
-	fmt.Println(os.Getenv("AUTH_LOGIN"))
-	fmt.Println(user.Password)
-	fmt.Println(os.Getenv("AUTH_PASSWORD"))
 
 	if user.Login == os.Getenv("AUTH_LOGIN") && user.Password == os.Getenv("AUTH_PASSWORD") {
 
@@ -90,5 +87,4 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		"message": message,
 		"token":   tokenString,
 	})
-
 }
